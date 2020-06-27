@@ -1,0 +1,30 @@
+---
+-
+  become: true
+  become_method: sudo
+  connection: ssh
+  hosts: all
+  name: "This sets up an httpd webserver"
+  tasks:
+    -
+      name: "Install apache packages"
+      yum:
+        name: httpd
+        state: present
+    -
+      name: "ensure httpd is running"
+      service:
+        name: httpd
+        state: started
+    -
+      blockinfile:
+        block: |-
+            Welcome to XYZCorp!
+            This is a sample file, created using Ansible!
+        create: true
+        group: apache
+        marker: ""
+        mode: 484
+        owner: apache
+        path: /var/www/html/index.html
+      name: "Insert content in the Website"
